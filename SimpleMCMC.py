@@ -12,6 +12,35 @@ Created on Thu May 07 16:25:29 2015
 #
 #==============================================================================
 import numpy as np
+import subprocess
+
+# this runs the blackbox function and returns the liklihood
+def RunBlackBox(params,BlackBoxName):
+    
+    # get the number of parameters
+    #n_params = params.len
+    
+    # now form the vall
+    this_call= []
+    this_call.append(BlackBoxName)
+    for p in params:
+        this_call.append(str(p))
+    print "This call is: "
+    print this_call
+    
+    # Call the process
+    p_process = subprocess.Popen(this_call,stdin=subprocess.PIPE,stdout=subprocess.PIPE) 
+    
+    # This gets all the output. It saves the last thing printed to screen
+    # The black box should print the likelihood to screen
+    for line in iter(p_process.stdout.readline,''):
+        latest_line = line.rstrip()        
+        #print line.rstrip()       
+    likelihood = float(latest_line)    
+       
+    return likelihood
+
+    
 
 def ReadChainFile(FileName):
     
