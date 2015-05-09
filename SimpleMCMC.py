@@ -72,15 +72,18 @@ def ReadChainFile(FileName):
 
 
 #==============================================================================
-# THis function generates new parameters based on the old parameters  
+# This function generates new parameters based on the old parameters  
 #==============================================================================  
 def GenerateNextStepParams(sigma_vec, old_params_vec):
     import random
     
-    new_params_vec = old_params_vec
-    for sigma,param in zip(sigma_vec,new_params_vec):
+    new_params_vec = []
+    
+    # zip the two vectors for iteration
+    for sigma,param in zip(sigma_vec,old_params_vec):
         param_change = random.gauss(0, sigma)
         param =  param + param_change
+        new_params_vec.append(param)
     
     return new_params_vec
 #==============================================================================
@@ -92,8 +95,10 @@ def GenerateNextStepParams(sigma_vec, old_params_vec):
 #==============================================================================
 def GenerateNextStepParamsReflective(sigma_vec, old_params_vec,min_params,max_params):
     import random    
-    new_params_vec = old_params_vec
-    for sigma,param,min_param,max_param in zip(sigma_vec,new_params_vec,min_params,max_params):
+    new_params_vec = []
+    
+    # zip the parameters for iteration
+    for sigma,param,min_param,max_param in zip(sigma_vec,old_params_vec,min_params,max_params):
         param_change = random.gauss(0, sigma)
         test_new_param = param+param_change
         if ( test_new_param < min_param):
@@ -102,6 +107,7 @@ def GenerateNextStepParamsReflective(sigma_vec, old_params_vec,min_params,max_pa
         if ( test_new_param > max_param):
             reflect = test_new_param-max_param
             param = reflect-max_param
+        new_params_vec.append(test_new_param)
                         
     return new_params_vec        
 #==============================================================================     
